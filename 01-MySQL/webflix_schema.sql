@@ -48,11 +48,11 @@ CREATE TABLE users(
 /* 'Coming Soon', 'Release', 'In Issue', 'Finished', 'Canceled'  */
 
 INSERT INTO status (status_id, status) VALUES
-	(1,'Coming Soon'),
-	(2,'Release'),
-	(3,'In Issue'),
-	(4,'Finished'),
-	(5,'Canceled');
+	(1, 'Coming Soon'),
+	(2, 'Release'),
+	(3, 'In Issue'),
+	(4, 'Finished'),
+	(5, 'Canceled');
 
 INSERT INTO users (user, email, name, birthday, pass, role) VALUES
 	('@juanesquivias', 'jesquivias@pucp.edu.pe', 'Juan Esquivias', '1976-07-30', MD5('chafo'), 'Admin'),
