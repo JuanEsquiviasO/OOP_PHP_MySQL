@@ -1,4 +1,4 @@
--- Queries
+-- Queries CRUD
 
 INSERT INTO movieseries SET imdb_id = 'tt3749900', title = 'Gotham', genres = 'Action, Crime, Drama', premiere = '2014', status = 3;
 
@@ -33,3 +33,48 @@ SELECT title, category, country, genres, premiere, status FROM movieseries WHERE
 SELECT title, category, country, genres, premiere, status FROM movieseries WHERE status = 3 OR status = 4 ORDER BY premiere;
 
 SELECT title, category, country, genres, premiere, status FROM movieseries WHERE status = 3 OR status = 4 OR status = 5 ORDER BY premiere;
+
+-- multiples queries
+SELECT * FROM movieseries AS ms INNER JOIN status AS s;
+
+SELECT * FROM movieseries AS ms INNER JOIN status AS s ON ms.status = s.status_id;
+
+SELECT ms.title, ms.category, ms.country, ms.genres, ms.premiere, s.status
+	FROM movieseries AS ms INNER JOIN status AS s ON ms.status = s.status_id
+	ORDER BY ms.premiere DESC;
+
+SELECT ms.title, ms.category, ms.country, ms.genres, ms.premiere, s.status
+	FROM movieseries AS ms INNER JOIN status AS s ON ms.status = s.status_id
+	WHERE s.status = 'Canceled' ORDER BY ms.premiere DESC;
+
+
+SELECT ms.title, ms.category, ms.country, ms.genres, ms.premiere, s.status
+	FROM movieseries AS ms INNER JOIN status AS s ON ms.status = s.status_id
+	WHERE s.status = 'Canceled' OR s.status = 'Coming Soon' ORDER BY ms.premiere;
+
+SELECT ms.title, ms.category, ms.country, ms.genres, ms.premiere, s.status
+	FROM movieseries AS ms INNER JOIN status AS s ON ms.status = s.status_id
+	WHERE s.status = 'Release' OR s.status = 'Finished' ORDER BY ms.premiere;
+
+SELECT ms.title, ms.category, ms.country, ms.genres, ms.premiere, s.status
+	FROM movieseries AS ms INNER JOIN status AS s ON ms.status = s.status_id
+	WHERE s.status = 'Release' OR s.status = 'Finished' OR s.status = 'In Issue'
+	 ORDER BY ms.premiere;
+
+SELECT ms.title, ms.category, ms.country, ms.genres, ms.premiere, s.status
+	FROM movieseries AS ms INNER JOIN status AS s ON ms.status = s.status_id
+	WHERE (s.status = 'Release' OR s.status = 'Finished' OR s.status = 'In Issue')
+	 AND ms.category = 'Serie' ORDER BY ms.premiere;
+
+-- FullText Key query
+SELECT * FROM movieseries
+	WHERE MATCH(title, author, actors, genres)
+	AGAINST('stallone' IN BOOLEAN MODE);
+
+SELECT * FROM movieseries
+	WHERE MATCH(title, author, actors, genres)
+	AGAINST('comedy' IN BOOLEAN MODE);
+
+SELECT * FROM movieseries
+	WHERE MATCH(title, author, actors, genres)
+	AGAINST('action' IN BOOLEAN MODE);
