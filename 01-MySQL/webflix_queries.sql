@@ -78,3 +78,52 @@ SELECT * FROM movieseries
 SELECT * FROM movieseries
 	WHERE MATCH(title, author, actors, genres)
 	AGAINST('action' IN BOOLEAN MODE);
+
+SELECT title, category, country, genres, premiere, status, author, actors FROM movieseries
+	WHERE MATCH(title, author, actors, genres)
+	AGAINST('stallone' IN BOOLEAN MODE);
+
+SELECT ms.title, ms.category, ms.country, ms.genres, ms.premiere, s.status
+	FROM movieseries AS ms
+	INNER JOIN status AS s
+	ON ms.status = s.status_id
+	WHERE MATCH(ms.title, ms.author, ms.actors, ms.genres)
+	AGAINST('drama' IN BOOLEAN MODE)
+	ORDER BY ms.premiere;
+
+-- Integridad referencial
+SELECT COUNT(*) FROM movieseries WHERE status = 1;
+SELECT COUNT(*) FROM movieseries WHERE status = 2;
+SELECT COUNT(*) FROM movieseries WHERE status = 3;
+SELECT COUNT(*) FROM movieseries WHERE status = 4;
+SELECT COUNT(*) FROM movieseries WHERE status = 5;
+
+INSERT INTO status SET status = 'Another status', status_id = 0;
+
+SELECT * FROM status;
+
+SELECT COUNT(*) FROM movieseries WHERE status = 6;
+
+DELETE FROM movieseries WHERE status = 1;
+
+/* Permite eliminar el registro con status_id 1 */
+DELETE FROM status  WHERE status_id = 1;
+
+DELETE FROM status  WHERE status_id = 2; 
+
+
+SELECT ms.title, ms.status, s.status_id, s.status
+	FROM movieseries AS ms
+	INNER JOIN status AS s
+	ON ms.status = s.status_id
+	ORDER BY ms.title;
+
+SELECT ms.title, ms.status, s.status_id, s.status
+	FROM movieseries AS ms
+	INNER JOIN status AS s
+	ON ms.status = s.status_id
+	ORDER BY s.status, ms.title;
+
+UPDATE status
+	SET status_id = 7, status = 'Premiered'
+	WHERE status_id = 2;
